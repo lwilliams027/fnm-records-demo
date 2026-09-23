@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230AAFCB'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='18' fill='white'%3EF%26amp;M%3C/text%3E%3C/svg%3E" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <meta name="theme-color" content="#0AAFCB" />
+    <meta name="theme-color" content="#1A1A1A" />
     <meta
       name="description"
       content="Face & Mane — clinical aesthetic and hair restoration treatments delivered privately to your home or office by rigorously vetted, physician-led medical professionals."
@@ -27,7 +27,7 @@
       rel="stylesheet"
     />
 
-    <title>Face & Mane — Aesthetic treatments delivered to your doorstep</title>
+    <title>Face &amp; Mane Records</title>
 
     <!-- Structured data (Portal Enhancements SOW D5): lets Google, Bing, and
          AI answer engines identify the business correctly. Bing has no review
@@ -69,8 +69,18 @@
         }
       }
     </script>
-    <script type="module" crossorigin src="/fnm-records-demo/assets/index-CdXyyR2s.js"></script>
-    <link rel="stylesheet" crossorigin href="/fnm-records-demo/assets/index-DY7HrCHD.css">
+    <script type="module" crossorigin src="/fnm-records-demo/assets/index-iSJmLamx.js"></script>
+    <link rel="stylesheet" crossorigin href="/fnm-records-demo/assets/index-CfAYrXAQ.css">
+      <!-- Added at deploy time: Add to Home Screen on iPhone/iPad runs this
+         full-screen, with the Records icon and an ink status bar. No service
+         worker (see CLAUDE.md gotcha #1) — just the manifest + Apple metas. -->
+    <link rel="manifest" href="/fnm-records-demo/records.webmanifest" />
+    <link rel="apple-touch-icon" href="/fnm-records-demo/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Records" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
     <div id="root"></div>
