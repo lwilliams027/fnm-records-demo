@@ -3,14 +3,38 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # --- Force HTTPS ---
-  # Leave commented until AutoSSL is active in cPanel, then uncomment.
-  # RewriteCond %{HTTPS} !=on
-  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # --- Force HTTPS (must come FIRST, before any other rule answers) ---
+  # AutoSSL is active in cPanel, and the live API's CORS allowlist only
+  # contains the https origin — an http page couldn't reach /app anyway.
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # --- Retired URLs → 301 (must come BEFORE everything else) ---
+  # /face and /mane each used to hold every category and concern in one flat
+  # page. That content now lives under /treatments/<category>[/<concern>].
+  #
+  # These are server-side 301s on purpose. The app also renders a client-side
+  # <Navigate> for these paths, but a JS redirect returns HTTP 200 first and is
+  # a much weaker signal to search and answer engines — a real 301 passes the
+  # ranking and states unambiguously that the URL moved permanently.
+  RewriteRule ^face/?$ /treatments [R=301,L]
+  RewriteRule ^mane/?$ /treatments/hair-restoration [R=301,L]
+
+  # --- Prerendered routes (must come BEFORE the SPA fallback) ---
+  # `npm run build` writes a fully-rendered <route>/index.html for every
+  # marketing page (scripts/prerender.mjs). Serve that file directly so
+  # crawlers and no-JS clients get real headings, nav, and copy instead of an
+  # empty <div id="root">. React still boots and takes over on the client.
+  #
+  # Matching on the file rather than letting mod_dir do it keeps the URL clean
+  # — no 301 to a trailing slash on every page.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+  RewriteRule ^(.+?)/?$ $1/index.html [L]
 
   # --- SPA fallback ---
-  # Serve index.html for any path that isn't a real file or folder, so
-  # client-side routes (e.g. /providers) work on refresh / direct link.
+  # Anything with no prerendered file (the /app portal, /login, 404s) still
+  # gets the shell and is routed client-side.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^ index.html [L]
